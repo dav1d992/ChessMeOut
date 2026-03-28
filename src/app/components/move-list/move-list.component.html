@@ -1,0 +1,45 @@
+<div class="move-list">
+  <div class="move-list-header">
+    <span>Moves</span>
+  </div>
+  <div class="move-list-body">
+    @for (pair of movePairs(); track pair.number) {
+      <div class="move-row">
+        <span class="move-number">{{ pair.number }}.</span>
+        <button
+          class="move-btn"
+          [class.active]="currentMoveIndex() === (pair.number - 1) * 2"
+          (click)="goToMove((pair.number - 1) * 2)"
+        >
+          <span class="san">{{ pair.white.san }}</span>
+          @if (pair.white.classification) {
+            <span
+              class="classification"
+              [style.background]="getClassColor(pair.white.classification)"
+            >{{ getClassIcon(pair.white.classification) }}</span>
+          }
+        </button>
+        @if (pair.black) {
+          <button
+            class="move-btn"
+            [class.active]="currentMoveIndex() === (pair.number - 1) * 2 + 1"
+            (click)="goToMove((pair.number - 1) * 2 + 1)"
+          >
+            <span class="san">{{ pair.black.san }}</span>
+            @if (pair.black.classification) {
+              <span
+                class="classification"
+                [style.background]="getClassColor(pair.black.classification)"
+              >{{ getClassIcon(pair.black.classification) }}</span>
+            }
+          </button>
+        }
+      </div>
+    }
+    @if (movePairs().length === 0) {
+      <div class="empty-state">
+        Play moves on the board or paste a PGN
+      </div>
+    }
+  </div>
+</div>

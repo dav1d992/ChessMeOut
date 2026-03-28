@@ -1,0 +1,94 @@
+<div class="board-container">
+  <div class="rank-labels">
+    @for (rank of rankLabels(); track rank) {
+      <div class="label">{{ rank }}</div>
+    }
+  </div>
+  <div class="board">
+    @for (sq of boardSquares(); track sq.square) {
+      <div
+        class="square"
+        [class.light]="sq.isLight"
+        [class.dark]="!sq.isLight"
+        [class.selected]="sq.isSelected"
+        [class.legal-target]="sq.isLegalTarget"
+        [class.last-move]="sq.isLastMoveFrom || sq.isLastMoveTo"
+        (click)="onSquareClick(sq)"
+        (dragover)="onDragOver($event)"
+        (drop)="onDrop($event, sq)"
+      >
+        @if (sq.isLegalTarget && !sq.piece) {
+          <div class="move-dot"></div>
+        }
+        @if (sq.isLegalTarget && sq.piece) {
+          <div class="capture-ring"></div>
+        }
+        @if (sq.piece) {
+          <span
+            class="piece"
+            [class.white-piece]="sq.piece.color === 'w'"
+            [class.black-piece]="sq.piece.color === 'b'"
+            [draggable]="true"
+            (dragstart)="onDragStart($event, sq)"
+            (dragend)="onDragEnd()"
+          >{{ getPieceUnicode(sq.piece) }}</span>
+        }
+      </div>
+    }
+
+    @if (arrowCoords(); as arrow) {
+      <svg class="arrow-overlay" viewBox="0 0 100 100">
+        <defs>
+          <marker
+            id="arrowhead"
+            markerWidth="3"
+            markerHeight="3"
+            refX="2.5"
+            refY="1.5"
+            orient="auto"
+          >
+            <polygon points="0 0, 3 1.5, 0 3" fill="#3b82f6" />
+          </marker>
+        </defs>
+        <line
+          [attr.x1]="arrow.x1"
+          [attr.y1]="arrow.y1"
+          [attr.x2]="arrow.x2"
+          [attr.y2]="arrow.y2"
+          stroke="#3b82f6"
+          stroke-width="2.5"
+          stroke-opacity="0.85"
+          stroke-linecap="round"
+          marker-end="url(#arrowhead)"
+        />
+      </svg>
+    }
+  </div>
+
+  <div class="file-labels">
+    <div class="spacer"></div>
+    @for (file of fileLabels(); track file) {
+      <div class="label">{{ file }}</div>
+    }
+  </div>
+
+  @if (showPromotion(); as promo) {
+    <div class="promotion-overlay" (click)="cancelPromotion()">
+      <div class="promotion-dialog" (click)="$event.stopPropagation()">
+        <span>Promote to:</span>
+        <div class="promotion-pieces">
+          @for (p of ['q', 'r', 'b', 'n']; track p) {
+            <button
+              class="promo-btn"
+              [class.white-piece]="store.currentTurn() === 'w'"
+              [class.black-piece]="store.currentTurn() === 'b'"
+              (click)="promote(p)"
+            >
+              {{ PIECE_UNICODE[p] }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

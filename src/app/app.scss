@@ -1,0 +1,360 @@
+// === Dark theme (brown/warm) ===
+.app-layout.dark {
+  --bg-primary: #2b1f1a;
+  --bg-secondary: #3a2a20;
+  --bg-header: #362318;
+  --bg-panel: #2e211a;
+  --bg-input: #3a2a20;
+  --bg-btn: #4a3628;
+  --bg-btn-hover: #5c4638;
+  --bg-active: #6b4c30;
+  --border: #5a4030;
+  --border-hover: #7a5a40;
+  --text-primary: #e8ddd4;
+  --text-secondary: #b0a090;
+  --text-muted: #8a7a6a;
+  --accent: #c47a3a;
+  --accent-hover: #a86428;
+  --accent-text: #fff;
+}
+
+// === Light theme (warm/cream) ===
+.app-layout.light {
+  --bg-primary: #f5ebe0;
+  --bg-secondary: #ede0d0;
+  --bg-header: #e6d5c3;
+  --bg-panel: #ede0d0;
+  --bg-input: #fff8f0;
+  --bg-btn: #e0d0c0;
+  --bg-btn-hover: #d4c0aa;
+  --bg-active: #c8a882;
+  --border: #c8b8a0;
+  --border-hover: #a89070;
+  --text-primary: #3a2a1a;
+  --text-secondary: #6a5a48;
+  --text-muted: #8a7a68;
+  --accent: #b06820;
+  --accent-hover: #8e5418;
+  --accent-text: #fff;
+}
+
+.app-layout {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 12px;
+  transition: background 0.3s;
+
+  h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+
+    .accent {
+      color: var(--accent);
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 12px;
+
+    h1 {
+      font-size: 18px;
+    }
+  }
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-btn);
+  color: var(--text-primary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: var(--bg-btn-hover);
+    border-color: var(--border-hover);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-text);
+    font-weight: 600;
+
+    &:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+  }
+
+  &.btn-theme {
+    font-size: 16px;
+    padding: 6px 12px;
+    line-height: 1;
+  }
+}
+
+.app-main {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  align-items: flex-start;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px;
+    gap: 8px;
+  }
+}
+
+.board-section {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+
+  @media (max-width: 480px) {
+    gap: 4px;
+  }
+}
+
+.panel-section {
+  flex: 1;
+  min-width: 280px;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  @media (max-width: 480px) {
+    gap: 8px;
+  }
+}
+
+.panel-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+
+  .btn {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 480px) {
+    .btn {
+      padding: 6px 6px;
+      font-size: 11px;
+    }
+  }
+}
+
+.engine-info {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s;
+
+  @media (max-width: 480px) {
+    padding: 8px 12px;
+  }
+}
+
+.engine-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: background 0.3s;
+
+  &.ready {
+    background: #4ade80;
+    box-shadow: 0 0 6px rgba(74, 222, 128, 0.4);
+  }
+}
+
+.depth-info {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-style: italic;
+}
+
+.live-eval {
+  .eval-value {
+    font-size: 18px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+
+    &.positive {
+      color: var(--text-primary);
+    }
+
+    &.negative {
+      color: var(--text-muted);
+    }
+
+    &.mate {
+      color: var(--accent);
+    }
+  }
+}
+
+.move-navigation {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 6px 8px;
+  transition: background 0.3s;
+}
+
+.nav-btn {
+  flex: 1;
+  padding: 8px;
+  background: var(--bg-btn);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) {
+    background: var(--bg-btn-hover);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 6px;
+    font-size: 14px;
+  }
+}
+
+.analysis-progress {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--border);
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #d4a040);
+    transition: width 0.3s ease;
+  }
+}
+
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.dialog {
+  background: var(--bg-secondary);
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: background 0.3s;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--text-primary);
+  }
+
+  textarea,
+  input {
+    width: 100%;
+    padding: 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+    resize: vertical;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+  }
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

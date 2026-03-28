@@ -1,0 +1,12 @@
+<div class="eval-bar" [title]="evalDisplay().text">
+  <div class="white-fill" [style.height.%]="evalDisplay().whitePercent">
+    @if (evalDisplay().whitePercent > 55) {
+      <span class="eval-text black-text">{{ evalDisplay().text }}</span>
+    }
+  </div>
+  <div class="black-fill" [style.height.%]="100 - evalDisplay().whitePercent">
+    @if (evalDisplay().whitePercent <= 55) {
+      <span class="eval-text white-text">{{ evalDisplay().text }}</span>
+    }
+  </div>
+</div>

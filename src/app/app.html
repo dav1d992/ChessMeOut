@@ -1,0 +1,98 @@
+<div class="app-layout" [class.dark]="darkMode()" [class.light]="!darkMode()">
+  <header class="app-header">
+    <h1>♟ Chess<span class="accent">Me</span>Out</h1>
+    <div class="header-actions">
+      <button class="btn btn-theme" (click)="toggleTheme()">{{ darkMode() ? '☀️' : '🌙' }}</button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="board-section">
+      <app-eval-bar />
+      <app-chess-board />
+    </div>
+
+    <div class="panel-section">
+      <div class="engine-info">
+        <div class="engine-status">
+          <span class="status-dot" [class.ready]="stockfish.isReady()"></span>
+          <span>Stockfish 18</span>
+          @if (stockfish.isAnalyzing()) {
+            <span class="depth-info">depth {{ stockfish.liveDepth() }}</span>
+          }
+        </div>
+        @if (stockfish.liveEval(); as ev) {
+          <div class="live-eval">
+            @if (ev.type === 'mate') {
+              <span class="eval-value mate">M{{ ev.value > 0 ? '+' : '' }}{{ ev.value }}</span>
+            } @else {
+              <span class="eval-value" [class.positive]="ev.value >= 0" [class.negative]="ev.value < 0">
+                {{ ev.value >= 0 ? '+' : '' }}{{ (ev.value / 100).toFixed(1) }}
+              </span>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="move-navigation">
+        <button class="nav-btn" (click)="store.goToStart()" [disabled]="store.isAtStart()" title="Go to start (Home)">⏮</button>
+        <button class="nav-btn" (click)="store.goBack()" [disabled]="store.isAtStart()" title="Back (←)">◀</button>
+        <button class="nav-btn" (click)="store.goForward()" [disabled]="store.isAtEnd()" title="Forward (→)">▶</button>
+        <button class="nav-btn" (click)="store.goToEnd()" [disabled]="store.isAtEnd()" title="Go to end (End)">⏭</button>
+      </div>
+
+      <app-move-list />
+
+      <div class="panel-actions">
+        <button class="btn" (click)="newGame()">New Game</button>
+        <button class="btn" (click)="showPgnDialog.set(true)">Load PGN</button>
+        <button class="btn" (click)="showFenDialog.set(true)">Load FEN</button>
+        <button class="btn" (click)="flipBoard()">Flip Board</button>
+      </div>
+    </div>
+  </main>
+
+  @if (store.isAnalyzing()) {
+    <div class="analysis-progress">
+      <div class="progress-bar" [style.width.%]="store.analysisProgress()"></div>
+    </div>
+  }
+
+  @if (showPgnDialog()) {
+    <div class="dialog-overlay" (click)="showPgnDialog.set(false)">
+      <div class="dialog" (click)="$event.stopPropagation()">
+        <h2>Load PGN</h2>
+        <textarea
+          placeholder="Paste PGN here..."
+          [value]="pgnInput()"
+          (input)="pgnInput.set($any($event.target).value)"
+          rows="10"
+        ></textarea>
+        <div class="dialog-actions">
+          <button class="btn" (click)="showPgnDialog.set(false)">Cancel</button>
+          <button class="btn btn-primary" (click)="loadPgn()">Load</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showFenDialog()) {
+    <div class="dialog-overlay" (click)="showFenDialog.set(false)">
+      <div class="dialog" (click)="$event.stopPropagation()">
+        <h2>Load FEN</h2>
+        <input
+          type="text"
+          placeholder="Paste FEN string here..."
+          [value]="fenInput()"
+          (input)="fenInput.set($any($event.target).value)"
+        />
+        <div class="dialog-actions">
+          <button class="btn" (click)="showFenDialog.set(false)">Cancel</button>
+          <button class="btn btn-primary" (click)="loadFen()">Load</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+
