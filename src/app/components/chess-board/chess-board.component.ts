@@ -6,6 +6,7 @@ import {
   OnInit,
   OnDestroy,
   HostListener,
+  effect,
 } from '@angular/core';
 import { Chess, Square, Piece } from 'chess.js';
 import { GameStore } from '../../store/game.store';
@@ -23,6 +24,16 @@ interface SquareData {
   isLastMoveTo: boolean;
 }
 
+interface MoveAnimation {
+  piece: string;
+  color: 'w' | 'b';
+  fromX: number;
+  fromY: number;
+  toX: number;
+  toY: number;
+  active: boolean;
+}
+
 @Component({
   selector: 'app-chess-board',
   standalone: true,
@@ -37,6 +48,8 @@ export class ChessBoardComponent {
   readonly dragPiece = signal<{ piece: Piece; x: number; y: number } | null>(null);
   readonly dragFrom = signal<Square | null>(null);
   readonly showPromotion = signal<{ from: Square; to: Square } | null>(null);
+  readonly moveAnimation = signal<MoveAnimation | null>(null);
+  readonly animatingTo = signal<Square | null>(null);
 
   readonly PIECE_UNICODE = PIECE_UNICODE;
 
@@ -175,6 +188,9 @@ export class ChessBoardComponent {
       return;
     }
 
+    if (piece) {
+      this.animateMove(from, to, piece);
+    }
     this.store.makeMove(from, to);
     this.clearSelection();
   }
@@ -203,6 +219,45 @@ export class ChessBoardComponent {
   private clearSelection(): void {
     this.selectedSquare.set(null);
     this.legalMoves.set([]);
+  }
+
+  private animateMove(from: Square, to: Square, piece: Piece): void {
+    const orientation = this.store.orientation();
+    const fromPos = this.squareToGridPos(from, orientation);
+    const toPos = this.squareToGridPos(to, orientation);
+    const key = piece.color === 'w' ? piece.type.toUpperCase() : piece.type.toLowerCase();
+
+    this.animatingTo.set(to);
+    this.moveAnimation.set({
+      piece: PIECE_UNICODE[key] || '',
+      color: piece.color,
+      fromX: fromPos.x,
+      fromY: fromPos.y,
+      toX: toPos.x,
+      toY: toPos.y,
+      active: false,
+    });
+
+    // Trigger the animation on the next frame
+    requestAnimationFrame(() => {
+      const anim = this.moveAnimation();
+      if (anim) {
+        this.moveAnimation.set({ ...anim, active: true });
+      }
+      // Clear after animation completes
+      setTimeout(() => {
+        this.moveAnimation.set(null);
+        this.animatingTo.set(null);
+      }, 200);
+    });
+  }
+
+  private squareToGridPos(sq: Square, orientation: string): { x: number; y: number } {
+    const fileIdx = sq.charCodeAt(0) - 97;
+    const rankIdx = parseInt(sq[1], 10) - 1;
+    const x = orientation === 'white' ? fileIdx : 7 - fileIdx;
+    const y = orientation === 'white' ? 7 - rankIdx : rankIdx;
+    return { x, y };
   }
 
   private isCurrentTurnPiece(piece: Piece): boolean {

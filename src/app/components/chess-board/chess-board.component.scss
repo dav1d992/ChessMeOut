@@ -182,6 +182,29 @@ $last-move-dark: #aaa23a;
   }
 }
 
+.animated-piece {
+  position: absolute;
+  width: 12.5%;
+  height: 12.5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 20;
+  top: calc(var(--from-y) * 12.5%);
+  left: calc(var(--from-x) * 12.5%);
+  transform: translate(0, 0);
+  will-change: transform;
+
+  &.animate-active {
+    transform: translate(
+      calc((var(--to-x) - var(--from-x)) * 100%),
+      calc((var(--to-y) - var(--from-y)) * 100%)
+    );
+    transition: transform 0.18s ease-out;
+  }
+}
+
 .move-dot {
   width: 28%;
   height: 28%;

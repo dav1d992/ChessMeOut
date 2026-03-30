@@ -28,6 +28,7 @@
             class="piece"
             [class.white-piece]="sq.piece.color === 'w'"
             [class.black-piece]="sq.piece.color === 'b'"
+            [style.visibility]="animatingTo() === sq.square ? 'hidden' : 'visible'"
             [draggable]="true"
             (dragstart)="onDragStart($event, sq)"
             (dragend)="onDragEnd()"
@@ -62,6 +63,19 @@
           marker-end="url(#arrowhead)"
         />
       </svg>
+    }
+
+    @if (moveAnimation(); as anim) {
+      <span
+        class="piece animated-piece"
+        [class.white-piece]="anim.color === 'w'"
+        [class.black-piece]="anim.color === 'b'"
+        [style.--from-x]="anim.fromX"
+        [style.--from-y]="anim.fromY"
+        [style.--to-x]="anim.toX"
+        [style.--to-y]="anim.toY"
+        [class.animate-active]="anim.active"
+      >{{ anim.piece }}</span>
     }
   </div>
 
