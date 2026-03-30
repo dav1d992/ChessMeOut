@@ -5,6 +5,7 @@
 .btn-opening-toggle {
   width: 100%;
   padding: 10px 16px;
+  min-height: 44px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--bg-secondary);
@@ -54,16 +55,30 @@
   display: flex;
   flex-direction: column;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 480px) {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 12px 12px 0 0;
+    border: 1px solid var(--accent);
+    border-bottom: none;
+    max-height: 70vh;
+    max-height: 70dvh;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
 
 .opening-search {
   width: 100%;
-  padding: 8px 12px;
+  padding: 10px 14px;
   background: var(--bg-input);
   border: none;
   border-bottom: 1px solid var(--border);
   color: var(--text-primary);
-  font-size: 13px;
+  font-size: 16px;
   box-sizing: border-box;
 
   &:focus {
@@ -75,28 +90,17 @@
 .dropdown-list {
   max-height: 320px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 6px;
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: var(--bg-primary);
-    border-radius: 3px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--border-hover);
-    border-radius: 3px;
-
-    &:hover {
-      background: var(--accent);
-    }
-  }
 
   scrollbar-width: thin;
   scrollbar-color: var(--border-hover) var(--bg-primary);
+
+  @media (max-width: 480px) {
+    max-height: none;
+    flex: 1;
+    overflow-y: auto;
+  }
 }
 
 .opening-category {
@@ -113,7 +117,8 @@
 .opening-item {
   display: block;
   width: 100%;
-  padding: 8px 10px;
+  padding: 10px 12px;
+  min-height: 44px;
   margin-bottom: 2px;
   background: transparent;
   border: 1px solid transparent;
@@ -125,6 +130,10 @@
 
   &:hover {
     background: var(--bg-btn-hover);
+  }
+
+  &:active {
+    background: var(--bg-active);
   }
 
   &.active {

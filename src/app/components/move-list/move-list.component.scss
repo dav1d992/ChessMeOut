@@ -21,16 +21,11 @@
 .move-list-body {
   flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 4px 0;
 
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 3px;
-  }
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
 
 .move-row {
@@ -57,7 +52,8 @@
   border: none;
   color: var(--text-primary);
   font-size: 14px;
-  padding: 5px 8px;
+  padding: 8px 8px;
+  min-height: 36px;
   cursor: pointer;
   text-align: left;
   border-radius: 4px;
@@ -68,6 +64,10 @@
 
   &:hover {
     background: var(--bg-btn-hover);
+  }
+
+  &:active {
+    background: var(--bg-active);
   }
 
   &.active {

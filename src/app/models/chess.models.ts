@@ -37,8 +37,8 @@ export interface AnalysisResult {
 export type BoardOrientation = 'white' | 'black';
 
 export const PIECE_UNICODE: Record<string, string> = {
-  K: '♚', Q: '♛', R: '♜', B: '♝', N: '♞', P: '♟',
-  k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟',
+  K: '♚︎', Q: '♛︎', R: '♜︎', B: '♝︎', N: '♞︎', P: '♟︎',
+  k: '♚︎', q: '♛︎', r: '♜︎', b: '♝︎', n: '♞︎', p: '♟︎',
 };
 
 export const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const;

@@ -40,10 +40,14 @@
 
 .app-layout {
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
+  // Safe area for notched iPhones
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .app-header {
@@ -51,6 +55,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 24px;
+  padding-left: max(24px, env(safe-area-inset-left));
+  padding-right: max(24px, env(safe-area-inset-right));
   background: var(--bg-header);
   border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
@@ -147,6 +153,8 @@
   display: flex;
   gap: 8px;
   align-items: stretch;
+  max-width: 100%;
+  overflow: hidden;
 
   @media (max-width: 480px) {
     gap: 4px;
@@ -187,8 +195,9 @@
 
   @media (max-width: 480px) {
     .btn {
-      padding: 6px 6px;
-      font-size: 11px;
+      padding: 10px 8px;
+      font-size: 12px;
+      min-height: 44px;
     }
   }
 }
@@ -266,6 +275,7 @@
 .nav-btn {
   flex: 1;
   padding: 8px;
+  min-height: 44px;
   background: var(--bg-btn);
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -285,7 +295,7 @@
 
   @media (max-width: 480px) {
     padding: 10px 6px;
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -306,7 +316,10 @@
 
 .dialog-overlay {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
@@ -316,8 +329,10 @@
 
 .dialog {
   background: var(--bg-secondary);
-  max-height: 90vh;
+  max-height: 80vh;
+  max-height: 80dvh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: 12px;
   padding: 24px;
   width: 90%;

@@ -1,5 +1,6 @@
 .eval-bar {
   width: 28px;
+  min-width: 28px;
   height: min(80vw, 560px);
   background: #4a3628;
   border-radius: 4px;
@@ -11,12 +12,14 @@
 
   @media (max-width: 768px) {
     width: 24px;
-    height: min(88vw, 560px);
+    min-width: 24px;
+    height: min(85vw, 560px);
   }
 
   @media (max-width: 480px) {
     width: 20px;
-    height: min(94vw, 560px);
+    min-width: 20px;
+    height: min(calc(100vw - 36px), 560px);
   }
 }
 
