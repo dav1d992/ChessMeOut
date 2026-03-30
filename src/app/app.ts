@@ -2,14 +2,16 @@ import { Component, inject, signal } from '@angular/core';
 import { ChessBoardComponent } from './components/chess-board/chess-board.component';
 import { MoveListComponent } from './components/move-list/move-list.component';
 import { EvalBarComponent } from './components/eval-bar/eval-bar.component';
+import { OpeningSelectorComponent } from './components/opening-selector/opening-selector.component';
 import { GameStore } from './store/game.store';
 import { StockfishService } from './services/stockfish.service';
+import { ChessOpening } from './models/openings';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ChessBoardComponent, MoveListComponent, EvalBarComponent, FormsModule],
+  imports: [ChessBoardComponent, MoveListComponent, EvalBarComponent, OpeningSelectorComponent, FormsModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   providers: [GameStore],
@@ -60,5 +62,9 @@ export class App {
 
   flipBoard(): void {
     this.store.flipBoard();
+  }
+
+  loadOpening(opening: ChessOpening): void {
+    this.store.loadOpening(opening);
   }
 }

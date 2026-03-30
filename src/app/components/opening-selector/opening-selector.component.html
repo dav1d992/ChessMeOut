@@ -1,0 +1,46 @@
+<div class="opening-selector" (clickOutside)="showDropdown.set(false)">
+  <button class="btn btn-opening-toggle" [class.open]="showDropdown()" (click)="toggleDropdown()">
+    <span>
+      @if (selectedOpening()) {
+        ♟ {{ selectedOpening()!.name }}
+      } @else {
+        ♟ Choose Opening
+      }
+    </span>
+    <span class="chevron" [class.open]="showDropdown()">▾</span>
+  </button>
+
+  @if (showDropdown()) {
+    <div class="dropdown-panel">
+      <input
+        type="text"
+        class="opening-search"
+        placeholder="Search openings..."
+        [value]="searchQuery()"
+        (input)="searchQuery.set($any($event.target).value)"
+      />
+
+      <div class="dropdown-list">
+        @for (category of filteredCategories(); track category.name) {
+          <div class="opening-category">
+            <h3>{{ category.name }}</h3>
+            @for (opening of category.openings; track opening.name) {
+              <button
+                class="opening-item"
+                [class.active]="selectedOpening()?.name === opening.name"
+                (click)="selectOpening(opening)"
+              >
+                <div class="opening-name">{{ opening.name }}</div>
+                <div class="opening-desc">{{ opening.description }}</div>
+              </button>
+            }
+          </div>
+        }
+
+        @if (filteredCategories().length === 0) {
+          <p class="no-results">No openings match your search.</p>
+        }
+      </div>
+    </div>
+  }
+</div>

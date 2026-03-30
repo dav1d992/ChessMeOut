@@ -6,6 +6,7 @@ import {
   GameMove,
   MoveClassification,
 } from '../models/chess.models';
+import { ChessOpening } from '../models/openings';
 import { StockfishService } from '../services/stockfish.service';
 
 export class GameStore {
@@ -208,6 +209,39 @@ export class GameStore {
     this.startFen.set('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
     this.moves.set([]);
     this.currentMoveIndex.set(-1);
+  }
+
+  loadOpening(opening: ChessOpening): boolean {
+    this.reset();
+    const tempChess = new Chess();
+
+    for (const san of opening.moves) {
+      try {
+        const move = tempChess.move(san);
+        if (!move) return false;
+      } catch {
+        return false;
+      }
+    }
+
+    // Replay to build the GameMove array
+    const replayChess = new Chess();
+    const gameMoves: GameMove[] = [];
+
+    for (const san of opening.moves) {
+      const move = replayChess.move(san);
+      if (!move) return false;
+      gameMoves.push({
+        from: move.from,
+        to: move.to,
+        san: move.san,
+        fen: replayChess.fen(),
+      });
+    }
+
+    this.moves.set(gameMoves);
+    this.currentMoveIndex.set(gameMoves.length - 1);
+    return true;
   }
 
   async analyzeAllMoves(): Promise<void> {

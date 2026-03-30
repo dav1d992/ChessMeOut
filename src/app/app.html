@@ -43,6 +43,8 @@
 
       <app-move-list />
 
+      <app-opening-selector (openingSelected)="loadOpening($event)" />
+
       <div class="panel-actions">
         <button class="btn" (click)="newGame()">New Game</button>
         <button class="btn" (click)="showPgnDialog.set(true)">Load PGN</button>
